@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 // routes
 app.use("/user",userroute);
-
+app.use('/admin',adminroute);
 app.listen(port,()=>{
     console.log(`🚀 port running on ${port}`);
 });

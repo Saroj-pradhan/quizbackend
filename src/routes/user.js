@@ -30,14 +30,11 @@ catch(error){
 // Login routes
 router.post('/login',exituserL,(req,res)=>{
  try{
-    console.log("677");
+ 
     
   const {id , password} = req.body;
   const token = jwt.sign({id:id},jwtpassword);
-  console.log(id,jwtpassword);
-  console.log(token);
-  
-  
+
   res.header("authorization",`bearer ${token}`).send(`you are logged in and your token is : ${token} `);
  }catch(error){
     res.status(404).send("internal server login error");

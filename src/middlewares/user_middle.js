@@ -21,7 +21,6 @@ async function exituserS(req,res,next){
 //user verification for login
 async function exituserL(req,res,next){
  try{
-    console.log("exituserLLL");
     
  const { id ,password} = req.body;
    const ans = await users.findOne({ id:id ,password:password});
