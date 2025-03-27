@@ -1,10 +1,37 @@
 
 const express = require("express");
-const { admins }= require("../db/mndb");
+const { admins , mcaquiz}= require("../db/mndb");
+const jwt = require('jsonwebtoken');
+const verifyjwtpass = process.env.JWT_SECREAT;
+
+
+function verifytoken(req,res,next){
+ try {
+  const {token } = req.headers;
+ 
+console.log(token);
+vfytoken = token.split(" ")[1];
+console.log(vfytoken);
+  jwt.verify(vfytoken,verifyjwtpass,(err,decoded)=>{
+  if(err){
+    console.log(err);
+   return res.send("error at jwt token verification")
+    
+  }
+  // req.user = decoded;
+  // console.log(decoded);
+  next(); 
+ }) 
+ 
+ } catch (error) {
+  console.log(error);
+  res.status(505).send("error at adminacess through token");
+ }
+}
 
 
 async function exitadmin(req,res,next){
-    console.log("11");
+    
     
     try{
     const {id , password }= req.body;
@@ -22,4 +49,4 @@ async function exitadmin(req,res,next){
     res.status(505).send("internal server error");
 }
 }
-module.exports =  exitadmin;
+module.exports =  {exitadmin, verifytoken};

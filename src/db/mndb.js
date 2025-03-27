@@ -32,7 +32,7 @@ const quizSchema = new mongoose.Schema({
         default: "ojee-mca-quiz", // Fixed value for all questions
         //immutable: true // Prevents modification after creation
       },
-    qustion:{type:String,required:true},
+    question:{type:String,required:true},
     option:[{type:String} ],
     answer:{type:String,required:true}
 });

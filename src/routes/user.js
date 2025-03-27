@@ -33,11 +33,23 @@ router.post('/login',exituserL,(req,res)=>{
  
     
   const {id , password} = req.body;
-  const token = jwt.sign({id:id},jwtpassword);
+  const token = jwt.sign({id:id},jwtpassword,{expiresIn:'1h'});
 
   res.header("authorization",`bearer ${token}`).send(`you are logged in and your token is : ${token} `);
  }catch(error){
     res.status(404).send("internal server login error");
  }
 });
+router.get('/getquiz',userMiddleware,async (req,res)=>{
+   try {
+    const ans = await mcaquiz.find();
+    res.json({
+        "message":ans
+    })
+   } catch (error) {
+    console.log(error);
+    res.status(404).send("error at fetchoing quizes")
+    
+   }
+})
 module.exports = router;
