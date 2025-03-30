@@ -19,7 +19,7 @@ const newuser =await new users({
     password:password
 })
 newuser.save();
-res.send(`succesfully signedup and the id is ${id} `);
+res.json({ "message": " signed up successgully! go to Login"});
 }
 catch(error){
     console.log(error);
@@ -35,7 +35,7 @@ router.post('/login',exituserL,(req,res)=>{
   const {id , password} = req.body;
   const token = jwt.sign({id:id},jwtpassword,{expiresIn:'1h'});
 
-  res.header("authorization",`bearer ${token}`).send(`you are logged in and your token is : ${token} `);
+  res.header("authorization",`bearer ${token}`).json({ "message": "you are successfully logged in", "token":token});
  }catch(error){
     res.status(404).send("internal server login error");
  }
