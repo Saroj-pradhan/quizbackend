@@ -2,12 +2,13 @@ const express = require('express');
 const { users } = require('../db/mndb');
 const jwt = require('jsonwebtoken');
 const jwtverifypass = process.env.JWT_SECREAT;
-console.log(jwtverifypass);
 
+const bcrypt = require('bcrypt');
+const saltround =10;
 function userMiddleware(req,res,next){
 try {
   const {token } = req.headers;
-console.log(token);
+
 const vfytoken = token.split(" ")[1];
 jwt.verify(vfytoken,jwtverifypass,(err,decode)=>{  
   if(err){
@@ -40,15 +41,25 @@ async function exituserS(req,res,next){
 async function exituserL(req,res,next){
  try{
     
- const { id ,password} = req.body;
-   const ans = await users.findOne({ id:id ,password:password});
-   if(ans == null){
-    res.status(404).send('invailed user credentials try again');
+ const { id ,password} = req.body; 
+ 
+
+ 
+   const user = await users.findOne({ id:id});
+   if(user == null){
+   return res.status(404).send('invailed user id , try another or signup with this id');
    }
-   return next();
+   const hassedpassword = await bcrypt.compare(password,user.password);
+  
+   if(hassedpassword){
+    return next();
+   
+   }
+     res.status(404).send("invailed password");
+   
+   
  }catch(error){
-    console.log(error);
-    
+  
    res.status(404).send("server error");
  }
 }

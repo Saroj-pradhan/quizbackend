@@ -19,4 +19,4 @@ app.use("/user",userroute);
 app.use('/admin',adminroute);
 app.listen(port,()=>{
     console.log(`🚀 port running on ${port}`);
-});
+}); 
